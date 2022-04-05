@@ -1,34 +1,13 @@
-// const User = require('./User');
-const Company = require('./Company');
-const BalanceSheet = require('./BalanceSheet');
-const IncomeStatement = require('./IncomeStatement');
-const CashFlowStatement = require('./CashFlowStatement');
+const User = require('./User');
+const Search = require('./Search');
 
-Company.hasMany(BalanceSheet, {
-  foreignKey: 'company_id',
+User.hasMany(Search, {
+  foreignKey: 'user_id',
   onDelete: 'CASCADE'
 });
 
-BalanceSheet.belongsTo(Company, {
-  foreignKey: 'company_id'
+Search.belongsTo(User, {
+  foreignKey: 'user_id'
 });
 
-Company.hasMany(IncomeStatement, {
-  foreignKey: 'company_id',
-  onDelete: 'CASCADE'
-});
-
-IncomeStatement.belongsTo(Company, {
-  foreignKey: 'company_id'
-});
-
-Company.hasMany(CashFlowStatement, {
-  foreignKey: 'company_id',
-  onDelete: 'CASCADE'
-});
-
-CashFlowStatement.belongsTo(Company, {
-  foreignKey: 'company_id'
-});
-
-module.exports = { Company, BalanceSheet, IncomeStatement, CashFlowStatement };
+module.exports = { User, Search };
