@@ -15,7 +15,7 @@ router.post('/', withAuth, async (req, res) => {
 
 
 // Get Portfolios
-router.get('/', withAuth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const portfolioData = await Portfolio.findAll();
     res.status(200).json(portfolioData);
