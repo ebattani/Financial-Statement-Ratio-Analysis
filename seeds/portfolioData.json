@@ -1,0 +1,46 @@
+[
+  {
+    "company_symbol": "AAPL",
+    "user_id": 1
+  },
+  {
+    "company_symbol": "AMZN",
+    "user_id": 1
+  },
+  {
+    "company_symbol": "NFLX",
+    "user_id": 1
+  },
+  {
+    "company_symbol": "FB",
+    "user_id": 1
+  },
+  {
+    "company_symbol": "GOOG",
+    "user_id": 1
+  },
+  {
+    "company_symbol": "ORCL",
+    "user_id": 2
+  },
+  {
+    "company_symbol": "CSCO",
+    "user_id": 2
+  },
+  {
+    "company_symbol": "INTC",
+    "user_id": 2
+  },
+  {
+    "company_symbol": "IBM",
+    "user_id": 2
+  },
+  {
+    "company_symbol": "V",
+    "user_id": 3
+  },
+  {
+    "company_symbol": "MA",
+    "user_id": 3
+  }
+]
