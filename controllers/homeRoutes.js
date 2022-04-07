@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     const portfolios = portfolioData.map((portfolio) => search.get({ plain: true }));
 
     // Pass serialized data and session flag into template
-    res.render('main', { 
+    res.render('homepage', { 
       portfolios, 
       logged_in: req.session.logged_in 
     });
@@ -40,7 +40,7 @@ router.get('/portfolio/:id', withAuth, async (req, res) => {
 
     const portfolios = portfolioData.get({ plain: true });
 
-    res.render('main', {
+    res.render('homepage', {
       portfolios,
       logged_in: req.session.logged_in
     });
