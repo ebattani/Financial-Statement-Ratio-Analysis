@@ -1,3 +1,19 @@
+class Ratio {
+  constructor(symbol, year, workingCapital, currentRatio, quickRatio) {
+      this.symbol = symbol;
+      this.year= year;
+      this.workingCapital = workingCapital;
+      this.currentRatio = currentRatio;
+      this.quickRatio = quickRatio;
+  }
+
+  getTicker() {
+      const ticker = this.ticker;
+      return ticker;
+  }
+
+}
+
 const keyAPI = `17460026230d940ebe74cf92231eb36e`;
 
   // let incomeStatementURL = `https://financialmodelingprep.com/api/v3/income-statement/${ticker}?limit=120&apikey=${keyAPI}`;
@@ -15,35 +31,58 @@ const keyAPI = `17460026230d940ebe74cf92231eb36e`;
   //     console.log("Cash Flow Statement");
   //     console.log(data);
   //   });
+let ratioResult = [];
 
-
-const calculateRatio = async (symbol, choice) => {
+function calculateRatio(symbol) {
   const ticker = symbol;
-  let ratioResult = [];
   let balanceSheetURL = `https://financialmodelingprep.com/api/v3/balance-sheet-statement/${ticker}?apikey=${keyAPI}&limit=120`;
-  await fetch(balanceSheetURL)
+  // let companyURL = `https://financialmodelingprep.com/api/v3/profile/${ticker}`;
+
+  fetch(balanceSheetURL)
     .then(response => response.json())
     .then(data => {
       console.log("Balance Sheets");
       console.log(data);
       if (data.length > 0) {
-        for (let i = 0; i < data.length; i++) {
-          // companyResult[i].workingCapital = data[i].totalCurrentAssets - data[i].totalCurrentLiabilities;
-          ratioResult.push(data[i].totalCurrentAssets / data[i].totalCurrentLiabilities);
-          // companyResult[i].quickRatio = (data[i].cashAndCashEquivalents + data[i].netReceivables) / data[i].totalCurrentLiabilities;
+        for (let i = 4; i >= 0; i--) {
+          let workingCapital = data[i].totalCurrentAssets - data[i].totalCurrentLiabilities;
+          let currentRatio = data[i].totalCurrentAssets / data[i].totalCurrentLiabilities;
+          let quickRatio = (data[i].cashAndCashEquivalents + data[i].netReceivables) / data[i].totalCurrentLiabilities;
+          let ratioObject = new Ratio(ticker, data[i].calendarYear, workingCapital, currentRatio, quickRatio);
+          ratioResult.push(ratioObject);
         }  
-        console.log("in loop: " + ratioResult);
       } else {
         console.log(`The company is not found!`);
       }
     });
-    return ratioResult;
+    console.log(ratioResult);
+    return;
 };
 
-function init() {
+// function companyInfo(symbol) {
+//   const ticker = symbol;
+//   let companyURL = `https://financialmodelingprep.com/api/v3/ratios-ttm/${ticker}?apikey=${keyAPI}&limit=120`;
+
+//   fetch(companyURL)
+//     .then(response => response.json())
+//     .then(data => {
+//       console.log("Company Information");
+//       console.log(data);
+//       if (data.length > 0) {
+//         ratioResult.push(data);
+//         console.log("in loop: " + ratioResult);
+//       } else {
+//         console.log(`The company is not found!`);
+//       }
+//     });
+//     return;
+// };
+
+function init(){
   const ticker = "AAPL";
-  const currentRatio = calculateRatio(ticker, "Current Ratio");
-  console.log("after call: " + currentRatio);
+  calculateRatio(ticker);
+  // companyInfo(ticker)
+  console.log("after call: " + ratioResult);
 }
 
 init();

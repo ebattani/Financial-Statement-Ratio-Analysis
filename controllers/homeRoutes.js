@@ -27,9 +27,9 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/portfolio/:id', withAuth, async (req, res) => {
+router.get('/dashboard', async (req, res) => {
   try {
-    const portfolioData = await Portfolio.findByPk(req.params.id, {
+    const portfolioData = await Portfolio.findAll({
       include: [
         {
           model: User,
@@ -40,7 +40,29 @@ router.get('/portfolio/:id', withAuth, async (req, res) => {
 
     const portfolios = portfolioData.get({ plain: true });
 
-    res.render('homepage', {
+    res.render('dashboard', {
+      portfolios,
+      logged_in: req.session.logged_in
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.get('/ratio', async (req, res) => {
+  try {
+    const portfolioData = await Portfolio.findByPk(req.params.id, {
+      include: [
+        {
+          model: Portfolio,
+          attributes: ['name'],
+        },
+      ],
+    });
+
+    const portfolios = portfolioData.get({ plain: true });
+
+    res.render('ratio', {
       portfolios,
       logged_in: req.session.logged_in
     });
@@ -52,7 +74,7 @@ router.get('/portfolio/:id', withAuth, async (req, res) => {
 router.get('/login', (req, res) => {
   // If the user is already logged in, redirect the request to another route
   if (req.session.logged_in) {
-    res.redirect('/main');
+    res.redirect('/dashboard');
     return;
   }
 
