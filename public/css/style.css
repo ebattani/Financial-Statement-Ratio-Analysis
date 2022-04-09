@@ -1,7 +1,6 @@
 *{
-  /* background-color: #333; */
+  font-family: 'Bebas Neue', cursive;
 }
-
 header, .project:not(:last-child) {
   background-color: #333;
   border-bottom: 1px solid #ccc;
@@ -31,7 +30,7 @@ header, .project:not(:last-child) {
 .navbar {
   overflow: hidden;
   background-color: #333;
-  font-family: Arial, Helvetica, sans-serif;
+
 }
 
 .navbar a {
@@ -116,4 +115,34 @@ input[type=text] {
 
 .search-container button:hover {
   background: #ccc;
+}
+
+.homepage-text{
+  margin: 5 auto;
+}
+
+.intro-text{
+  text-align: center;
+  font-size: 40px;
+}
+
+.intro-body-text{
+  text-align: center;
+}
+
+.example-chart{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+ol{
+  display: table;
+  margin: 0 auto;
+}
+
+.body-text-steps{
+  text-align: center;
+  font-size: 30px;
 }

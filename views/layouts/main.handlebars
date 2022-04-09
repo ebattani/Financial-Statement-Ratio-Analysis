@@ -7,6 +7,9 @@
   <title>Financial Ratio Analysis</title>
   <link rel="stylesheet" href="/css/jass.css">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
@@ -17,7 +20,8 @@
       </h1>
         <div class="navbar">
           {{#if logged_in}}
-           <button class='no-button' id='logout'>logout</button>
+
+              <button class='no-button' id='logout'>logout</button>
              {{else}}
             <a href="/login">Login</a>
              {{/if}}
@@ -26,7 +30,9 @@
     </header>
 
     <main class="container container-fluid">
+
         {{{ body }}}
+        
     </main>
 
     <footer>
