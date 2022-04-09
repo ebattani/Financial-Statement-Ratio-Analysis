@@ -18,10 +18,14 @@ router.get('/', async (req, res) => {
     const portfolios = portfolioData.map((portfolio) => search.get({ plain: true }));
 
     // Pass serialized data and session flag into template
-    res.render('homepage', { 
-      portfolios, 
-      logged_in: req.session.logged_in 
-    });
+
+    if (req.session.logged_in) {
+      res.render('ratio');
+      return;
+    }
+    else{
+    res.render('homepage');
+  }
   } catch (err) {
     res.status(500).json(err);
   }
@@ -64,7 +68,7 @@ router.get('/ratio', async (req, res) => {
 
     res.render('ratio', {
       portfolios,
-      logged_in: req.session.logged_in
+      logged_in: true,
     });
   } catch (err) {
     res.status(500).json(err);
