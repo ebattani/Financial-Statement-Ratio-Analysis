@@ -17,13 +17,14 @@
       </h1>
         <div class="navbar">
           {{#if logged_in}}
-            <a href="/">Home</a>
+            {{!-- <a href="/">Home</a>
                <div class="search-container">
                 <form action="/action_page.php">
                   <input type="text" placeholder="Search.." name="search">
                   <button type="submit"><i class="fa fa-search"></i></button>
                 </form>
-              </div>
+              </div> --}}
+              <button class='no-button' id='logout'>logout</button>
              {{else}}
             <a href="/login">Login</a>
              {{/if}}
