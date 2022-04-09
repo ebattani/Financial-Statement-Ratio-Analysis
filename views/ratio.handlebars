@@ -14,16 +14,14 @@
 
                 </div>
             
-        <div class="dropdown">
-            <button class="dropbtn" onclick="myFunction()">Choose Ratio Type
-              <i class="fa"></i>
-            </button>
-            <div class="dropdown-content" id="myDropdown">
-              <a href="#">Link 1</a>
-              <a href="#">Link 2</a>
-              <a href="#">Link 3</a>
-            </div>
-            </div> 
+
+            <select class="form-control browser-default dropdown" id="ratioChoice">
+              {{!-- <option value="" selected="selected">Choose Ratio</option> --}}
+              <option value=ratioResult.>Current Ratio</option>
+              <option value="workingCapital">Working Capital</option>
+              <option value="quickRatio">Quick Ratio</option>
+
+            </select>
 
         {{!-- chart --}}
         <canvas id="myChart" width="800" height="400"></canvas>
@@ -33,4 +31,4 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-    <script src="/public/js/ratio.js"></script>
+    <script src="/js/ratio.js"></script>
