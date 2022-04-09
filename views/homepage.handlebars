@@ -1,94 +1,26 @@
-{{!-- <!DOCTYPE html>
-<html lang="en">
-<head>
 
-  <meta charset="UTF-8">
+        
+        
+        <nav>
+            <div class='input-group'>
+              <div class='form-outline'>
+                <input type='search' id='form1' class='form-control' />
+                <label class='form-label' for='form1'>Search Company</label>
+              </div>
+              <button type='button' class='btn btn-primary'>
+                <i class='fas fa-search'></i>
+              </button>
+            </div>
+            <a href='/'>MAIN</a>
+            <button class='no-button' id='logout'>logout</button>
+        </nav>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <div>
+          <p> Use this site to gather financial statements, review ratios and make the best financial decisions</p>            
+        </div>
 
-  <title>Financial Ratio Analysis</title>
+    </div>
 
-  <link rel="stylesheet" href="/css/jass.css">
+  </body>
 
-  <link rel="stylesheet" href="/css/style.css">
-
-</head>
-
-<body>
-
-  
-  <div class="flex-column justify-space-around">
-
-    <header class="display-flex justify-space-between align-center p-2">
-
-      <h1>
-
-        <a href="/">Financial Ratio Analysis </a>
-
-      </h1>
-
-      <nav>
-
-        {{#if logged_in}}
-
-      <div class="input-group">
-
-      <div class="form-outline">
-
-        <input type="search" id="form1" class="form-control" />
-
-        <label class="form-label" for="form1">Search Company</label>
-
-      </div>
-
-        <button type="button" class="btn btn-primary">
-
-        <i class="fas fa-search"></i>
-
-        </button>
-
-      </div>
-
-        <a href="/main">MAIN</a> |
-
-        <button class="no-button" id="logout">logout</button>
-
-        {{else}}
-
-        <a href="/login">Login</a>
-
-        {{/if}}
-
-      </nav>
-
-    </header>
-
-    <main class="container container-fluid mt-5">
-
-
-      <div>
-          
-
-      </div>
-
-
-    </main>
-
-    <footer>
-
-      
-    </footer>
-
-  </div>
-
-  <!-- Render script for logged in users only -->
-
-  {{#if logged_in}}
-
-  <script src="/js/logout.js"></script>
-
-  {{/if}}
-
-</body>
-
-</html> --}}
+</html>
