@@ -1,74 +1,26 @@
-{{!-- 
-
-//company data
-//ratios
-//description of company
-//charts 
-
---}}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-  <meta charset="UTF-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Financial Ratio Analysis</title>
-
-  <link rel="stylesheet" href="/public/css/jass.css">
-
-  <link rel="stylesheet" href="/public/css/style.css">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-</head>
-
-<body>
-
-  
-
-    <header class="display-flex justify-space-between align-center p-2">
-
-      <h1>
-
-        <a href="/">Financial Ratio Analysis </a>
-
-      </h1>
-
-        <div class="navbar">
 
 
-                <div class="search-container">
-        
-                    <form action="/action_page.php">
+        <div>
 
-                    <input class="searchbar" type="text" placeholder="Search.." name="search">
+          <div class="search-container">
+    
 
-                    <button type="submit"><i class="fa fa-search"></i></button>
+                    <input class="searchbar" id="user-input" type="text" placeholder="Search.." name="search">
+
+                    <button type="submit" id="search-button"><i class="fa fa-search"></i></button>
 
                 </form>
 
                 </div>
-        
-
-        </div>
-
-    </header>
-
-        <div>
             
-        <div class="dropdown">
-            <button class="dropbtn" onclick="myFunction()">Choose Ratio Type
-              <i class="fa"></i>
-            </button>
-            <div class="dropdown-content" id="myDropdown">
-              <a href="#">Link 1</a>
-              <a href="#">Link 2</a>
-              <a href="#">Link 3</a>
-            </div>
-            </div> 
+
+            <select class="form-control browser-default dropdown" id="ratioChoice">
+              {{!-- <option value="" selected="selected">Choose Ratio</option> --}}
+              <option value=ratioResult.>Current Ratio</option>
+              <option value="workingCapital">Working Capital</option>
+              <option value="quickRatio">Quick Ratio</option>
+
+            </select>
 
         {{!-- chart --}}
         <canvas id="myChart" width="800" height="400"></canvas>
@@ -76,26 +28,6 @@
 
         </div>
 
-    <div>
-
-
-        {{!-- How to use: --}}
-
-
-
-        
-    </div>
-
-    <div>
-
-        {{!-- ratios div --}}
-
-
-    </div>
-
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-    <script src="/public/js/script.js"></script>
-
-    </body>
+    <script src="/js/ratio.js"></script>
