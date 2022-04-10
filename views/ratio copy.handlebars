@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-auto">
+    <h2>Welcome, {{user.name}}!</h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col col-xs-12 col-sm-12 col-md-3 col-lg-3">
+    <form>
+      <!-- Enter Company Name -->
+      <div class="form-group">
+        <label for="ticker">Portfolio:</label>
+        <input class="form-control" type="text" id="user-input" name="ticker" required value="AAPL">
+      </div>
+      <button id="add-button" class="form-control btn btn-search">Add</button>
+      <hr class="my-4">
+      <!-- Show Portfolio List -->
+      {{#if portfolios.length}}
+      <div class="form-group">
+        <ul>
+          {{#each portfolios as |portfolio| }}
+          <label for="checkbox-current" class="ratio-checkbox">
+            <input type="checkbox" id="{{portfolio.id}}" /> {{portfolio.company_symbol}}
+          </label>
+          {{/each}}
+        </ul>
+      </div>
+      <button id="delete-button" class="form-control btn btn-danger" data-id="{{portfolio.id}}">Delete</button>
+      {{/if}}
+    </form>
+    <div class="row">
+      <div class="col">
+        <h4 class="card-title">Ratio:</h4>
+        <div class='menu-section' id="ratio-types">
+          <label for="checkbox-current" class="ratio-checkbox">
+            <input type="checkbox" id="current-ratio" value="" checked /> Current Ratio
+          </label>
+          <label for="checkbox-quick" class="ratio-checkbox">
+            <input type="checkbox" id="quick-ratio" value="" /> Quick Ratio
+          </label>
+          <label for="checkbox-wc" class="ratio-checkbox">
+            <input type="checkbox" id="working-capital" value="" /> Working Capital
+          </label>
+        </div>
+        <button id="result-button" class="form-control btn btn-primary">Result</button>
+      </div>
+    </div>
+    {{!-- <div class="row">
+      <div class="col">
+        <h4 class="card-title">Portfolio:</h4>
+        <ul>
+          {{#each portfolios as |portfolio| }}
+          <label for="checkbox-current" class="ratio-checkbox">
+            <input type="checkbox" id="{{portfolio.id}}" value="" /> {{portfolio.company_symbol}}
+          </label>
+          {{/each}}
+        </ul>
+      </div>
+    </div> --}}
+  </div>
+  <div class="col col-xs-12 col-sm-12 col-md-9 col-lg-9">
+    <!-- Chart,js Graph -->
+  </div>
+</div>
+
+<script src="/js/search.js"></script>
