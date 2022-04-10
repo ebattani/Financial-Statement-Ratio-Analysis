@@ -16,7 +16,7 @@
 
   <div>
 
-    <select class="form-control browser-default dropdown" id="ratioChoice">
+    <select class="form-control browser-default dropdown" id="ratioChoice" onchange="changeSelect()">
               {{!-- <option value="" selected="selected">Choose Ratio</option> --}}
               <option value="1">Current Ratio</option>
               <option value="2">Working Capital</option>
@@ -33,16 +33,13 @@
 
     </div>
 
-    <div id="ratioText">
-
-oinasnfgoaf
-    </div>
+    <div id="ratioText">The current ratio is a liquidity ratio that measures a companys ability to pay short-term obligations or those due within one year. It tells investors and analysts how a company can maximize the current assets on its balance sheet to satisfy its current debt and other payables. A current ratio that is in line with the industry average or slightly higher is generally considered acceptable. A current ratio that is lower than the industry average may indicate a higher risk of distress or default. Similarly, if a company has a very high current ratio compared with its peer group, it indicates that management may not be using its assets efficiently.</div>
 
 </div>
 
       
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     <script src="/js/ratio.js"></script>
-    <script src="/public/js/ratiopage.js"></script>
+    <script src="/js/ratiopage.js"></script>
     <script src="jquery-3.6.0.min.js"></script>
     
