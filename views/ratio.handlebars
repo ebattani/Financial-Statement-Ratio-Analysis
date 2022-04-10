@@ -1,34 +1,48 @@
 
 
-        <div>
+<div>
 
-          <div class="search-container">
+  <div class="search-container">
         
-                    <form action="/action_page.php">
+    <form action="/action_page.php">
 
-                    <input class="searchbar" type="text" placeholder="Search.." name="search">
+    <input class="searchbar" type="text" placeholder="Search.." name="search">
 
-                    <button type="submit"><i class="fa fa-search"></i></button>
+    <button type="submit"><i class="fa fa-search"></i></button>
 
-                </form>
+    </form>
 
-                </div>
-            
+  </div>
 
-            <select class="form-control browser-default dropdown" id="ratioChoice">
+  <div>
+
+    <select class="form-control browser-default dropdown" id="ratioChoice">
               {{!-- <option value="" selected="selected">Choose Ratio</option> --}}
-              <option value=ratioResult.>Current Ratio</option>
-              <option value="workingCapital">Working Capital</option>
-              <option value="quickRatio">Quick Ratio</option>
-
+              <option value="1">Current Ratio</option>
+              <option value="2">Working Capital</option>
+              <option value="3">Quick Ratio</option>
             </select>
 
-        {{!-- chart --}}
+  </div>  
+
+      
+    <div>
+
+      {{!-- chart --}}
         <canvas id="myChart" width="800" height="400"></canvas>
 
+    </div>
 
-        </div>
+    <div id="ratioText">
 
+oinasnfgoaf
+    </div>
 
+</div>
+
+      
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     <script src="/js/ratio.js"></script>
+    <script src="/public/js/ratiopage.js"></script>
+    <script src="jquery-3.6.0.min.js"></script>
+    
