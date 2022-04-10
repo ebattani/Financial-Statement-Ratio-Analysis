@@ -4,64 +4,55 @@ const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
   try {
-    // Get all searches and JOIN with user data
-    const portfolioData = await Portfolio.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
-      ],
-    });
-
-    // Serialize data so the template can read it
-    const portfolios = portfolioData.map((portfolio) => search.get({ plain: true }));
-
-    // Pass serialized data and session flag into template
-
-    if (req.session.logged_in) {
-      res.render('ratio');
-      return;
-    }
-    else{
-    res.render('homepage');
-  }
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-router.get('/dashboard', async (req, res) => {
+// router.get('/dashboard', async (req, res) => {
+//   try {
+//     const portfolioData = await Portfolio.findAll({
+//       include: [
+//         {
+//           model: User,
+//           attributes: ['name'],
+//         },
+//       ],
+//     });
+
+//     const portfolios = portfolioData.get({ plain: true });
+
+//     res.render('dashboard', {
+//       portfolios,
+//       logged_in: req.session.logged_in
+//     });
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+
+router.get('/dashboard', withAuth, async (req, res) => {
   try {
-    const portfolioData = await Portfolio.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
-      ],
-    });
+    const portfolioData = await Portfolio.findAll(
+      { where: { user_id: req.session.user_id } },
+      { include: [{ model: User }] });
 
     const portfolios = portfolioData.get({ plain: true });
 
     res.render('dashboard', {
       portfolios,
-      logged_in: req.session.logged_in
+      logged_in: true,
     });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-router.get('/ratio', async (req, res) => {
+router.get('/ratio', withAuth, async (req, res) => {
   try {
-    const portfolioData = await Portfolio.findByPk(req.params.id, {
-      include: [
-        {
-          model: Portfolio,
-          attributes: ['name'],
-        },
-      ],
+    const portfolioData = await Portfolio.findAll(
+      { where: { user_id: req.session.user_id } },
+      { include: [{ model: User }] 
     });
 
     const portfolios = portfolioData.get({ plain: true });
