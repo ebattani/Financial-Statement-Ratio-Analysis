@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-auto">
+    <h2>Welcome, {{user.name}}!</h2>
+  </div>
+</div>
+<!-- Enter Company Name -->
+<div class="row">
+  <div class="col-auto">
+    <form>
+      <div class="form-group">
+        <label for="ticker">Portfolio:</label>
+        <input class="form-control" type="text" id="user-input" name="ticker" required value="AAPL">
+      </div>
+      <button id="add-button" class="form-control btn btn-search">Add</button>
+      <hr class="my-4">
+      <!-- Show Portfolio List -->
+      {{#if user.portfolios.length}}
+      <div class="form-group">
+          {{#each user.portfolios as |portfolio| }}
+          <label for="portfolio-checkbox">
+            <input type="checkbox" class="single-check" data-id="{{portfolio.id}}" name="portfolio-checkbox" onclick="onlyOne(this)" /> {{portfolio.company_symbol}}
+          </label>
+          {{/each}}
+      </div>
+      <button id="delete-button" class="form-control btn btn-danger">Delete</button>
+      {{/if}}
+    </form>
+  </div>
+</div>
+      
+{{#if user.portfolios.length}}
+<div class="row">
+  <div class="col-auto">
+    <p class="text-center"> Company Information </p>
+  </div>
+</div>
+
+<button id="company-button" class="btn btn-primary">Information</button>
+
+<div class="row">
+  <div class="col-auto">
+    <div class="card">
+      {{#each user.portfolios as |portfolio| }}
+      <div class="card-header">
+        <h4>Company: companyName {{portfolio.company_symbol}}</h4>
+        <p></p>
+      </div>
+      <div class="card-body">
+        <p class="card-text"></p>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+{{/if}}
+
+<script src="/js/search.js"></script>
