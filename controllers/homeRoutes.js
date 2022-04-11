@@ -26,7 +26,11 @@ router.get('/ratio', withAuth, async (req, res) => {
     const user = userData.get({ plain: true });
 
     res.render('ratio', {
+
       user,
+
+      portfolios,
+
       logged_in: req.session.logged_in
     });
   } catch (err) {
