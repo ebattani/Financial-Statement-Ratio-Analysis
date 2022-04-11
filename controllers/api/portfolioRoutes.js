@@ -6,7 +6,11 @@ const withAuth = require('../../utils/auth');
 // Create a new Portfolio
 router.post('/', withAuth, async (req, res) => {
   try {
-    const newPortfolio = await Portfolio.create(req.body);
+    const newPortfolio = await Portfolio.create({
+      company_symbol: req.body.ticker,
+      user_id: req.session.user_id
+    });
+
     res.status(200).json(newPortfolio);
   } catch (err) {
     res.status(400).json(err);
@@ -14,7 +18,7 @@ router.post('/', withAuth, async (req, res) => {
 });
 
 
-// Get Portfolios
+// Read all portfolios
 router.get('/', async (req, res) => {
   try {
     const portfolioData = await Portfolio.findAll();
@@ -24,17 +28,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Delete a portfolio
 router.delete('/:id', withAuth, async (req, res) => {
   try {
     const portfolioData = await Portfolio.destroy({
-      where: {
-        id: req.params.id,
-        user_id: req.session.user_id,
-      },
+      where: { id: req.params.id } 
     });
 
     if (!portfolioData) {
-      res.status(404).json({ message: 'No project found with this id!' });
+      res.status(404).json({ message: 'No company found with this id!' });
       return;
     }
 
