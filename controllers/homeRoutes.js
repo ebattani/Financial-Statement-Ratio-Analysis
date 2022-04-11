@@ -4,70 +4,33 @@ const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
   try {
-    // Get all searches and JOIN with user data
-    const portfolioData = await Portfolio.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
-      ],
-    });
-
-    // Serialize data so the template can read it
-    const portfolios = portfolioData.map((portfolio) => search.get({ plain: true }));
-
-    // Pass serialized data and session flag into template
-
     if (req.session.logged_in) {
-      res.render('ratio');
-      return;
+      res.redirect('/ratio');
     }
-    else{
-    res.render('homepage');
-  }
+    else {
+      res.render('homepage');
+    }
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-router.get('/dashboard', async (req, res) => {
+router.get('/ratio', withAuth, async (req, res) => {
   try {
-    const portfolioData = await Portfolio.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
-      ],
+    const userData = await User.findByPk(req.session.user_id, {
+      attributes: { exclude: ['password'] },
+      include: [{ model: Portfolio }]
     });
 
-    const portfolios = portfolioData.get({ plain: true });
-
-    res.render('dashboard', {
-      portfolios,
-      logged_in: req.session.logged_in
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-router.get('/ratio', async (req, res) => {
-  try {
-    const portfolioData = await Portfolio.findByPk(req.params.id, {
-      include: [
-        {
-          model: Portfolio,
-          attributes: ['name'],
-        },
-      ],
-    });
-
-    const portfolios = portfolioData.get({ plain: true });
+    // const users = userData.map((user) => user.get({ plain: true }));
+    const user = userData.get({ plain: true });
 
     res.render('ratio', {
+
+      user,
+
       portfolios,
+
       logged_in: req.session.logged_in
     });
   } catch (err) {
