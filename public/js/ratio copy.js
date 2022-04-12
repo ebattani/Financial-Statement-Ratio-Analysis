@@ -1,6 +1,7 @@
-
-var canvas = document.getElementById("myChart");
-var ctx = canvas.getContext('2d');
+const canvas = document.getElementById("myChart");
+const ctx = canvas.getContext('2d');
+const dropDownMenu = document.querySelector('#ratio-choice');
+const resultButton = document.querySelector('#result-button');
 
 // Global Options:
 Chart.defaults.global.defaultFontColor = 'black';
@@ -10,6 +11,7 @@ Chart.defaults.global.defaultFontSize = 16;
 let datasetArray = [];
 let colorArray = ["red", "blue", "black", "green", "purple", "orange", "grey", "yellow", "pink", "navy"];
 let myIndex = 0;
+let ratioChoice = "Current Choice";
 
 let data = {
 
@@ -19,31 +21,37 @@ let data = {
 };
 
 // Notice the scaleLabel at the same level as Ticks
-var options = {
+let options = {
   scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                },
-                scaleLabel: {
-                     display: true,
-                     labelString: 'Current Ratio',
-                     fontSize: 20 
-                  }
-            }]            
-        }  
+    yAxes: [{
+      ticks: {
+        beginAtZero: true
+      },
+      scaleLabel: {
+        display: true,
+        labelString: 'Current Ratio',
+        fontSize: 20
+      }
+    }]
+  }
 };
 
 // Chart declaration:
-var myBarChart = new Chart(ctx, {
+let myChart = new Chart(ctx, {
   type: 'line',
   data: data,
   options: options
 });
 
-function calculateRatio(symbol) {
+function calculateRatio(symbol, ratioChoice) {
   const ticker = symbol;
-  const keyAPI = `17460026230d940ebe74cf92231eb36e`;
+  // const keyAPI = `17460026230d940ebe74cf92231eb36e`; // nara
+  // const keyAPI = `0e0111a172272a2fcfd42016bb1d29cf`; // ethan
+  const keyAPI = `2c582395bb4c1edbb8f89db296b46aeb`; // brandon
+  let checkChoice = dropDownMenu.value;
+  if (checkChoice) {
+    ratioChoice = checkChoice;
+  }
 
   let balanceSheetURL = `https://financialmodelingprep.com/api/v3/balance-sheet-statement/${ticker}?apikey=${keyAPI}&limit=120`;
 
@@ -60,106 +68,104 @@ function calculateRatio(symbol) {
           let workingCapital = data[i].totalCurrentAssets - data[i].totalCurrentLiabilities;
           let currentRatio = data[i].totalCurrentAssets / data[i].totalCurrentLiabilities;
           let quickRatio = (data[i].cashAndCashEquivalents + data[i].netReceivables) / data[i].totalCurrentLiabilities;
-          ratioResult.push({symbol: symbol, calendarYear: calendarYear, workingCapital: workingCapital, currentRatio: currentRatio, quickRatio: quickRatio})
-        }  
+          ratioResult.push({
+            symbol: symbol,
+            calendarYear: calendarYear,
+            workingCapital: workingCapital,
+            currentRatio: currentRatio,
+            quickRatio: quickRatio
+          })
+        }
         console.log(ratioResult);
-        ratioChoice = "Current Ratio";
+        // ratioChoice = "Current Ratio";
         let businessData = [];
         switch (ratioChoice) {
-          case "Current Ratio":{
+          case "Current Ratio": {
             for (let i = 0; i < ratioResult.length; i++) {
               const element = ratioResult[i].currentRatio;
               businessData.push(element);
             }
-            // console.log(businessData);
             break;
           }
-          default:
+          case "Quick Ratio": {
+            for (let i = 0; i < ratioResult.length; i++) {
+              const element = ratioResult[i].quickRatio;
+              businessData.push(element);
+            }
             break;
-        }    
+          }
+          case "Working Capital": {
+            for (let i = 0; i < ratioResult.length; i++) {
+              const element = ratioResult[i].workingCapital;
+              businessData.push(element);
+            }
+            break;
+          }
+          default: {
+            for (let i = 0; i < ratioResult.length; i++) {
+              const element = ratioResult[i].currentRatio;
+              businessData.push(element);
+            }
+            break;
+          }
+          // console.log(businessData);     
+        }
         // Collecting chart dataset
         datasetArray.push({
-
           label: ticker,
-    
           fill: false,
-    
           lineTension: 0.1,
-    
           backgroundColor: colorArray[myIndex],
-    
           borderColor: colorArray[myIndex],
-    
           borderCapStyle: 'butt',
-    
           borderDash: [],
-    
           borderDashOffset: 0.0,
-    
           pointBorderColor: "black",
-    
           pointBackgroundColor: "white",
-    
           pointBorderWidth: 1,
-    
           pointHoverRadius: 8,
-    
           pointHoverBackgroundColor: colorArray[myIndex],
-    
           pointHoverBorderColor: "black",
-    
           pointHoverBorderWidth: 2,
-    
           pointRadius: 4,
-    
           pointHitRadius: 10,
-    
           data: businessData,
-    
           spanGaps: true,
         });
         console.log(datasetArray);
         myIndex++;
       } else {
-        console.log(`The company is not found!`);
+        console.log(`The company: ${ticker} is not found!`);
       }
     });
-    return;
+    let myChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options
+    });
+  return;
 };
 
-async function createDataset() {
-  let portfolioArray = ["AAPL", "AMZN", "NFLX", "GOOG"];
-  myIndex = 0;
-  for (let i = 0; i < portfolioArray.length; i++) {
-    const company = portfolioArray[i];
-    calculateRatio(company);
-  }  
+function createDataset() {
+  fetch('/api/portfolios')
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if (data.length > 0) {
+        myIndex = 0;
+        for (let index = 0; index < data.length; index++) {
+          let company = data[index].company_symbol;
+          calculateRatio(company);
+        } 
+      } else {
+          console.log(`No data found!`);
+      };
+    });
+};
+
+if (resultButton) {
+  resultButton.addEventListener('click', createDataset);
 }
-
-function getRatioResult(ratioChoice) {
-  let businessData = [];
-  switch (ratioChoice) {
-    case "Current Ratio":{
-      for (let i = 0; i < ratioResult.length; i++) {
-        const element = ratioResult[i].currentRatio;
-        businessData.push(element);
-      }
-      console.log(businessData);
-      break;
-    }
-    default:
-      break;
-  }
-
-}
-
-function init(){
-  createDataset();
-  // companyInfo(ticker)
-  console.log("After call:");
-}
-
-init();
 
   // let incomeStatementURL = `https://financialmodelingprep.com/api/v3/income-statement/${ticker}?limit=120&apikey=${keyAPI}`;
   // fetch(incomeStatementURL)
@@ -176,3 +182,4 @@ init();
   //     console.log("Cash Flow Statement");
   //     console.log(data);
   //   });
+
