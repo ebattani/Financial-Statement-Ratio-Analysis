@@ -1,42 +1,46 @@
-class Ratio {
-  constructor(symbol, year, workingCapital, currentRatio, quickRatio) {
-      this.symbol = symbol;
-      this.year= year;
-      this.workingCapital = workingCapital;
-      this.currentRatio = currentRatio;
-      this.quickRatio = quickRatio;
+ratioResult = [
+  {
+    symbol: '',
+    calendarYear: 0,
+    currentRatio: 0,
+    quickRatio: 0,
+    workingCapital: 0
+  },
+  {
+    symbol: '',
+    calendarYear: 2018,
+    currentRatio: 0,
+    quickRatio: 0,
+    workingCapital: 0
+  },
+  {
+    symbol: '',
+    calendarYear: 2019,
+    currentRatio: 0,
+    quickRatio: 0,
+    workingCapital: 0
+  },
+  {
+    symbol: '',
+    calendarYear: 2020,
+    currentRatio: 0,
+    quickRatio: 0,
+    workingCapital: 0
+  },
+  {
+    symbol: '',
+    calendarYear: 2021,
+    currentRatio: 0,
+    quickRatio: 0,
+    workingCapital: 0
   }
-
-  getTicker() {
-      const ticker = this.ticker;
-      return ticker;
-  }
-
-}
-
-const keyAPI = `17460026230d940ebe74cf92231eb36e`;
-
-  // let incomeStatementURL = `https://financialmodelingprep.com/api/v3/income-statement/${ticker}?limit=120&apikey=${keyAPI}`;
-  // fetch(incomeStatementURL)
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     console.log("Income Statement");
-  //     console.log(data);
-  //   });
-
-  // let cashFlowStatementURL = `https://financialmodelingprep.com/api/v3/cash-flow-statement/${ticker}?limit=120&apikey=${keyAPI}`;
-  // fetch(cashFlowStatementURL)
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     console.log("Cash Flow Statement");
-  //     console.log(data);
-  //   });
-let ratioResult = [];
+];
 
 function calculateRatio(symbol) {
   const ticker = symbol;
+  const keyAPI = `17460026230d940ebe74cf92231eb36e`;
+
   let balanceSheetURL = `https://financialmodelingprep.com/api/v3/balance-sheet-statement/${ticker}?apikey=${keyAPI}&limit=120`;
-  // let companyURL = `https://financialmodelingprep.com/api/v3/profile/${ticker}`;
 
   fetch(balanceSheetURL)
     .then(response => response.json())
@@ -44,55 +48,131 @@ function calculateRatio(symbol) {
       console.log("Balance Sheets");
       console.log(data);
       if (data.length > 0) {
+        let j = 0;
         for (let i = 4; i >= 0; i--) {
-          let workingCapital = data[i].totalCurrentAssets - data[i].totalCurrentLiabilities;
-          let currentRatio = data[i].totalCurrentAssets / data[i].totalCurrentLiabilities;
-          let quickRatio = (data[i].cashAndCashEquivalents + data[i].netReceivables) / data[i].totalCurrentLiabilities;
-          let ratioObject = new Ratio(ticker, data[i].calendarYear, workingCapital, currentRatio, quickRatio);
-          ratioResult.push(ratioObject);
+          ratioResult[j].symbol = data[i].symbol;
+          ratioResult[j].calendarYear = data[i].calendarYear;
+          ratioResult[j].workingCapital = data[i].totalCurrentAssets - data[i].totalCurrentLiabilities;
+          ratioResult[j].currentRatio = data[i].totalCurrentAssets / data[i].totalCurrentLiabilities;
+          ratioResult[j].quickRatio = (data[i].cashAndCashEquivalents + data[i].netReceivables) / data[i].totalCurrentLiabilities;
+          j++;
         }  
+        console.log(ratioResult);
       } else {
         console.log(`The company is not found!`);
       }
     });
-    console.log(ratioResult);
     return;
 };
 
-document.write(ratioResult);
-
-// function companyInfo(symbol) {
-//   const ticker = symbol;
-//   let companyURL = `https://financialmodelingprep.com/api/v3/ratios-ttm/${ticker}?apikey=${keyAPI}&limit=120`;
-
-//   fetch(companyURL)
-//     .then(response => response.json())
-//     .then(data => {
-//       console.log("Company Information");
-//       console.log(data);
-//       if (data.length > 0) {
-//         ratioResult.push(data);
-//         console.log("in loop: " + ratioResult);
-//       } else {
-//         console.log(`The company is not found!`);
-//       }
-//     });
-//     return;
-// };
 
 function init(){
   const ticker = "AAPL";
   calculateRatio(ticker);
   // companyInfo(ticker)
-  console.log("after call: " + ratioResult);
+  console.log("after call: " + ratioResult[0].symbol);
 }
 
 init();
 
-
-
+var ratioVal = 0;
+var ratioData1 = [];
+var ratioData2 = [];
 var canvas = document.getElementById("myChart");
 var ctx = canvas.getContext('2d');
+let data1 = [];
+
+function changeSelect() {
+  if (document.getElementById("ratioChoice").value == "1") {
+ 
+      document.getElementById("ratioText").innerHTML = "The current ratio is a liquidity ratio that measures a companys ability to pay short-term obligations or those due within one year. It tells investors and analysts how a company can maximize the current assets on its balance sheet to satisfy its current debt and other payables. A current ratio that is in line with the industry average or slightly higher is generally considered acceptable. A current ratio that is lower than the industry average may indicate a higher risk of distress or default. Similarly, if a company has a very high current ratio compared with its peer group, it indicates that management may not be using its assets efficiently.";
+      
+
+      
+  } else if (document.getElementById("ratioChoice").value == "2") {
+
+      document.getElementById("ratioText").innerHTML = "Working capital, also known as net working capital (NWC), is the difference between a company’s current assets—such as cash, accounts receivable/customers’ unpaid bills, and inventories of raw materials and finished goods—and its current liabilities, such as accounts payable and debts. NWC is a measure of a company’s liquidity, operational efficiency, and short-term financial health. If a company has substantial positive NWC, then it should have the potential to invest and grow. If a company’s current assets do not exceed its current liabilities, then it may have trouble growing or paying back creditors. It might even go bankrupt.";
+  }
+    
+    else if (document.getElementById("ratioChoice").value == "3") {
+      
+      document.getElementById("ratioText").innerHTML = "The quick ratio is an indicator of a company’s short-term liquidity position and measures a company’s ability to meet its short-term obligations with its most liquid assets. Since it indicates the company’s ability to instantly use its near-cash assets (assets that can be converted quickly to cash) to pay down its current liabilities, it is also called the acid test ratio. An acid test is a slang term for a quick test designed to produce instant results.";
+
+  }
+  
+}
+
+
+// if(ratioVal == 1){
+//   for (let i = 0; i < 5; i++) {
+//     ratioData1.push(ratioResult[i].currentRatio);
+//     console.log(ratioData1);
+    
+//   }
+// }
+// else if(ratioVal == 2){
+//   for (let i = 0; i < 5; i++) {
+//     ratioData1.push(ratioResult[i].workingCapital);
+//     console.log(ratioData1);
+// }
+// }
+
+// else if(ratioVal == 3){
+//   for (let i = 0; i < 5; i++) {
+//     ratioData1.push(ratioResult[i].quickRatio);
+//     console.log(ratioData1);
+// }
+// }
+
+
+
+function changeVal(){
+
+
+if (document.getElementById("ratioChoice").value == "1"){
+
+
+  for (let i = 0; i < 5; i++) {
+    
+    ratioData2.push(ratioResult[i].currentRatio);
+  
+  }
+
+  console.log(ratioData2);
+
+}
+else if(document.getElementById("ratioChoice").value == "2"){
+
+
+  for (let i = 0; i < 5; i++) {
+   
+    ratioData2.push(ratioResult[i].workingCapital);
+
+}
+
+console.log(ratioData2);
+
+}
+
+else if(document.getElementById("ratioChoice").value == "3"){
+
+  for (let i = 0; i < 5; i++) {
+    
+    ratioData2.push(ratioResult[i].quickRatio);
+
+}
+
+console.log(ratioData2);
+
+}
+
+
+}
+
+
+console.log(toString(ratioData2));
+
+
 
 // Global Options:
 Chart.defaults.global.defaultFontColor = 'black';
@@ -104,7 +184,7 @@ var data = {
 
   datasets: [{
 
-      label: "Business 1",
+      label: 'APPL',
 
       fill: false,
 
@@ -138,13 +218,13 @@ var data = {
 
       pointHitRadius: 10,
 
-      data: [65, 59, 80, 81, 56],
+      data: ratioData2,
 
       spanGaps: true,
 
     }, {
 
-      label: "Business 2",
+      label: ratioResult[0].symbol,
 
       fill: false,
 
@@ -178,7 +258,7 @@ var data = {
 
       pointHitRadius: 10,
 
-      data: [10, 20, 60, 95, 64],
+      data: ratioData2,
 
       spanGaps: true,
     }

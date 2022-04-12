@@ -1,6 +1,12 @@
 *{
   font-family: 'Bebas Neue', cursive;
+  
 }
+
+body{
+  background-color: antiquewhite;
+}
+
 header, .project:not(:last-child) {
   background-color: #333;
   border-bottom: 1px solid #ccc;
@@ -34,7 +40,7 @@ header, .project:not(:last-child) {
 }
 
 .navbar a {
-  float: left;
+  float: right;
   font-size: 16px;
   color: white;
   text-align: center;
@@ -128,6 +134,8 @@ input[type=text] {
 
 .intro-body-text{
   text-align: center;
+  margin-top: 10px;
+  font-weight: 200;
 }
 
 .example-chart{
@@ -149,4 +157,13 @@ ol{
 
 .ratiohbrs{
   margin: 10px;
+}
+
+#ratioText{
+  margin-left: 70px;
+  margin-top: 20px;
+}
+
+#ratioChoice{
+  margin-left: 75px;
 }
