@@ -1,11 +1,3 @@
-const ratioChoice = document.getElementById('ratioChoice');
-ratioChoice.addEventListener('click', chooseRatio);
-
-function chooseRatio(){
-console.log(ratioChoice.value);
-
-}
-
 
 var canvas = document.getElementById("myChart");
 var ctx = canvas.getContext('2d');

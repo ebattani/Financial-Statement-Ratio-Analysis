@@ -418,8 +418,9 @@ button {
 }
 
 a {
-  color: #1b89bc;
+  color: whitesmoke;
   text-decoration: none;
+ 
 }
 
 a:hover {
