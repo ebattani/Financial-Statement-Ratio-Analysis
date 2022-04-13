@@ -13,41 +13,43 @@ Chart.defaults.font.size = 16;
 
 // Chart Variables
 let datasetArray = [];
-let colorArray = ['red', 'blue', 'black', 'green', 'purple', 'orange', 'grey', 'yellow', 'pink', 'navy'];
+let colorArray = ['red', 'blue', 'green', 'purple', 'orange', 'black', 'grey', 'yellow', 'pink', 'navy'];
 let myIndex = 0;
 let ratioChoice = 1;  // Default: Current Ratio
 let ratioText = ['Current Ratio', 'Quick Ratio', 'Working Capital'];
 
 let data = {
+
   labels: [2017, 2018, 2019, 2020, 2021],
+
   datasets: datasetArray
 };
 
 // Notice the scaleLabel at the same level as Ticks
 let options = {
+  responsive: true,
+  // maintainAspectRatio: false,
+  // animation: {
+  //   duration: 0
+  // },
+  // hover: {
+  //   animationDuration: 0
+  // },
+  // responsiveAnimationDuration: 0,
   scales: {
-    yAxes: [{
+    yAxes: {
       ticks: {
-        beginAtZero: false
+        beginAtZero: true
       },
       scaleLabel: {
         display: true,
-        labelString: 'Current Ratio',
+        labelString: ratioText[ratioChoice-1],
         fontSize: 20
       }
-    }]
+    }
   }
 };
 
-// let options = {
-//   scales: {
-//       y: {
-//           beginAtZero: true
-//       }
-//   }
-// }
-
-// Chart declaration:
 let myChart = new Chart(ctx, {
   type: 'line',
   data: data,
@@ -56,130 +58,11 @@ let myChart = new Chart(ctx, {
 
 function calculateRatio(symbol) {
   const ticker = symbol;
-  // const keyAPI = `17460026230d940ebe74cf92231eb36e`; // nara
-  const keyAPI = `0e0111a172272a2fcfd42016bb1d29cf`; // ethan
-  // const keyAPI = '2c582395bb4c1edbb8f89db296b46aeb' // brandon
-
-  let balanceSheetURL = `https://financialmodelingprep.com/api/v3/balance-sheet-statement/${ticker}?apikey=${keyAPI}&limit=120`;
-
-  fetch(balanceSheetURL)
-    .then(response => response.json())
-    .then(data => {
-      // console.log("Balance Sheets");
-      // console.log(data);
-      if (data.length > 0) {
-        let ratioResult = [];
-        for (let i = 4; i >= 0; i--) {
-          let symbol = data[i].symbol;
-          let calendarYear = data[i].calendarYear;
-          let workingCapital = data[i].totalCurrentAssets - data[i].totalCurrentLiabilities;
-          let currentRatio = data[i].totalCurrentAssets / data[i].totalCurrentLiabilities;
-          let quickRatio = (data[i].cashAndCashEquivalents + data[i].netReceivables) / data[i].totalCurrentLiabilities;
-          ratioResult.push({
-            symbol: symbol,
-            calendarYear: calendarYear,
-            workingCapital: workingCapital,
-            currentRatio: currentRatio,
-            quickRatio: quickRatio
-          })
-        }
-        console.log(ratioResult);
-        // ratioChoice = "Current Ratio";
-        let businessData = [];
-        switch (ratioChoice) {
-          case "1": { // Current Ratio
-            for (let i = 0; i < ratioResult.length; i++) {
-              const element = ratioResult[i].currentRatio;
-              businessData.push(element);
-            }
-            break;
-          }
-          case "2": { // Quick Ratio
-            for (let i = 0; i < ratioResult.length; i++) {
-              const element = ratioResult[i].quickRatio;
-              businessData.push(element);
-            }
-            break;
-          }
-          case "3": { // Working Capital
-            for (let i = 0; i < ratioResult.length; i++) {
-              const element = ratioResult[i].workingCapital;
-              businessData.push(element);
-            }
-            break;
-          }
-          default: {
-            for (let i = 0; i < ratioResult.length; i++) {
-              const element = ratioResult[i].currentRatio;
-              businessData.push(element);
-            }
-            break;
-          }
-          // console.log(businessData);     
-        }
-        // Collecting chart dataset
-        datasetArray.push({
-          label: ticker,
-          fill: false,
-          lineTension: 0.1,
-          backgroundColor: colorArray[myIndex],
-          borderColor: colorArray[myIndex],
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          pointBorderColor: "black",
-          pointBackgroundColor: "white",
-          pointBorderWidth: 1,
-          pointHoverRadius: 8,
-          pointHoverBackgroundColor: colorArray[myIndex],
-          pointHoverBorderColor: "black",
-          pointHoverBorderWidth: 2,
-          pointRadius: 4,
-          pointHitRadius: 10,
-          data: businessData,
-          spanGaps: true,
-        });
-        console.log(datasetArray);
-        myIndex++;
-      } else {
-        console.log(`The company: ${ticker} is not found!`);
-      }
-    });
-  return;
-  myChart.update();
-};
-
-function createDataset() {
-  // datasetArray = [];
-  const id = userInfo.getAttribute('data-id');
-  let checkChoice = dropDownMenu.value;
-  if (checkChoice) {
-    ratioChoice = checkChoice;
-  }
-  console.log(ratioChoice);
-  fetch(`/api/portfolios/${id}`)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      if (data.length > 0) {
-        myIndex = 0;
-        for (let index = 0; index < data.length; index++) {
-          let company = data[index].company_symbol;
-          calculateRatio(company);
-          myChart.update();
-        }
-      } else {
-        console.log(`No data found!`);
-      };
-      myChart.update();
-    });
-}
-
-function calculateRatio(symbol) {
-  const ticker = symbol;
-  // const keyAPI = `17460026230d940ebe74cf92231eb36e`; // nara
+  const keyAPI = `17460026230d940ebe74cf92231eb36e`; // nara1
   // const keyAPI = `0e0111a172272a2fcfd42016bb1d29cf`; // ethan
-  const keyAPI = `2c582395bb4c1edbb8f89db296b46aeb`; // brandon
+  // const keyAPI = `2c582395bb4c1edbb8f89db296b46aeb`; // brandon
+  // const keyAPI = `d819321c933c451db684ef4a2b41d62d`; // nara2
+
 
   let balanceSheetURL = `https://financialmodelingprep.com/api/v3/balance-sheet-statement/${ticker}?apikey=${keyAPI}&limit=120`;
 
@@ -193,15 +76,18 @@ function calculateRatio(symbol) {
         for (let i = 4; i >= 0; i--) {
           let symbol = data[i].symbol;
           let calendarYear = data[i].calendarYear;
-          let workingCapital = data[i].totalCurrentAssets - data[i].totalCurrentLiabilities;
           let currentRatio = data[i].totalCurrentAssets / data[i].totalCurrentLiabilities;
           let quickRatio = (data[i].cashAndCashEquivalents + data[i].netReceivables) / data[i].totalCurrentLiabilities;
+          let workingCapital = data[i].totalCurrentAssets - data[i].totalCurrentLiabilities;
+          // let workingCapital = data[i].totalCurrentAssets - data[i].totalCurrentLiabilities;
+
           ratioResult.push({
             symbol: symbol,
             calendarYear: calendarYear,
-            workingCapital: workingCapital,
             currentRatio: currentRatio,
-            quickRatio: quickRatio
+            quickRatio: quickRatio,
+            workingCapital: workingCapital
+
           })
         }
         console.log(ratioResult);
@@ -270,7 +156,6 @@ function calculateRatio(symbol) {
 };
 
 function createDataset() {
-  // datasetArray = [];
   const id = userInfo.getAttribute('data-id');
   let checkChoice = dropDownMenu.value;
   if (checkChoice) {
@@ -291,16 +176,62 @@ function createDataset() {
         console.log(`No data found!`);
       };
     });
+
+    data = {
+
+      labels: [2017, 2018, 2019, 2020, 2021],
+    
+      datasets: datasetArray
+    };
+    
+    myChart.destroy();
+    // Notice the scaleLabel at the same level as Ticks
+    options = {
+      responsive: true,
+      // maintainAspectRatio: false,
+      // animation: {
+      //   duration: 0
+      // },
+      // hover: {
+      //   animationDuration: 0
+      // },
+      // responsiveAnimationDuration: 0,
+      scales: {
+        yAxes: {
+          ticks: {
+            beginAtZero: true
+          },
+          scaleLabel: {
+            display: true,
+            labelString: ratioText[ratioChoice-1],
+            fontSize: 20
+          }
+        }
+      }
+    };
+
+    myChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options
+    });
+  
     myChart.update();
 }
 
-createDataset();
+function init(){
+
+  createDataset();
+}
+
+init();
 
 if (resultButton) {
   resultButton.addEventListener('click', createDataset);
 }
 
 function changeSelect() {
+  datasetArray = [];
   const checkChoice = dropDownMenu.value;
   switch (checkChoice) {
     case "1":
