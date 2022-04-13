@@ -1,5 +1,5 @@
 *{
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Roboto', sans-serif;
 }
 header, .project:not(:last-child) {
   background-color: #333;
@@ -132,6 +132,7 @@ input[type=text] {
 
 .intro-body-text{
   text-align: center;
+  margin: 20px auto;
 }
 
 .example-chart{
@@ -149,4 +150,24 @@ ol{
 .body-text-steps{
   text-align: center;
   font-size: 30px;
+}
+
+.text-center{
+  margin-top: 20px;
+  font-size: 35px;
+  text-decoration: underline;
+}
+
+#ratio-text{
+  margin-left: 20px;
+}
+
+#ratio-choice{
+  margin: 10px auto;
+  float: right;
+}
+
+h2{
+  text-align: center;
+  margin-top: 15px;
 }
