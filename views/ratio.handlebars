@@ -43,14 +43,13 @@
 
   </div>
 
-{{!-- {{#if user.portfolios.length}} --}}
+  {{!-- {{#if user.portfolios.length}} --}}
   <div>
 
     {{!-- chart --}}
-    {{!-- <div class="chart-container" style="position: relative; height:40vh; width:80vw"> --}}
-      {{!-- <canvas id="myChart"</canvas> --}}
-      <canvas id="myChart" width="800" height="400"></canvas>
+    <canvas id="myChart" width="800" height="400">
       {{!-- <p>Current Ratio</p> --}}
+    </canvas>
 
   </div>
 
@@ -80,11 +79,27 @@
     <div class="card">
       {{#each user.portfolios as |portfolio| }}
       <div class="card-header">
-        <h4>Company: companyName {{portfolio.company_symbol}}</h4>
-        <p></p>
+        <h4 class="card-header-text">Company: <span id="company-name{{portfolio.id}}"></span></h4>
       </div>
       <div class="card-body">
-        <p class="card-text"></p>
+        <div class="row">
+          <div class="col col-xs-12 col-sm-12 col-md-9 col-lg-9">
+            <p class="card-text">Website: <span id="company-web{{portfolio.id}}"></span></p>
+            <p class="card-text">Exchange: <span id="company-exchange{{portfolio.id}}"></span></p>
+            <p class="card-text">Industry: <span id="company-industry{{portfolio.id}}"></span></p>
+            <p class="card-text">Sector: <span id="company-sector{{portfolio.id}}"></span></p>
+          </div>
+          <div class="col col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <img src="" alt="Company Icon" id="company-icon{{portfolio.id}}">
+            <p class="card-text">Ticker: {{portfolio.company_symbol}}</span></p>
+            <p class="card-text">IPO Date: <span id="company-ipo{{portfolio.id}}"></span></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-auto">
+            <p class="card-text">Description: <span id="company-desc{{portfolio.id}}"></span></p>
+          </div>
+        </div>
       </div>
       {{/each}}
     </div>
@@ -92,7 +107,5 @@
 </div>
 {{/if}}
 
-
-{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script> --}}
 <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
 <script src="/js/ratio.js"></script>
