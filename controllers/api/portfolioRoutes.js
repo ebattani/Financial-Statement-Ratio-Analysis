@@ -28,6 +28,24 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Read a user's portfolios
+router.get('/:id', withAuth, async (req, res) => {
+  try {
+    const portfolioData = await Portfolio.findAll({
+      where: { user_id: req.params.id } 
+    });
+
+    if (!portfolioData) {
+      res.status(404).json({ message: 'No company found with this id!' });
+      return;
+    }
+
+    res.status(200).json(portfolioData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // Delete a portfolio
 router.delete('/:id', withAuth, async (req, res) => {
   try {
