@@ -8,7 +8,7 @@ let companyInfo = [];
 
 function getCompanyInfo(symbol) {
   const ticker = symbol;
-  const keyAPI = `2c582395bb4c1edbb8f89db296b46aeb`;
+  const keyAPI = `17460026230d940ebe74cf92231eb36e`;
   let companyURL = `https://financialmodelingprep.com/api/v3/profile/${ticker}?apikey=${keyAPI}`;
 
   fetch(companyURL)
