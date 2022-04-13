@@ -21,7 +21,7 @@ body{
 }
 
 .no-button:hover {
-  color: #065b83;
+  color: antiquewhite;
   text-decoration: underline;
 }
 
@@ -65,7 +65,7 @@ body{
 }
 
 .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
-  background-color: #1b89bc;
+  background-color: #065b83;
 }
 
 .dropdown-content {
