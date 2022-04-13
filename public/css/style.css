@@ -6,6 +6,10 @@ header, .project:not(:last-child) {
   border-bottom: 1px solid #ccc;
 }
 
+body{
+  background-color: antiquewhite;
+}
+
 .no-button {
   background: none;
   border: none;

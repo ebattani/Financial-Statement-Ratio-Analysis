@@ -1,14 +1,18 @@
-
+<div class="row">
+  <div class="col-auto">
+    <h2>Welcome, {{user.name}}!</h2>
+  </div>
+</div>
 
 <div>
 
 
-          <div class="search-container">
+    <div class="search-container">
     
 
-                    <input class="searchbar" id="user-input" type="text" placeholder="Search.." name="search">
+          <input class="searchbar" id="user-input" type="text" placeholder="Search.." name="search">
 
-                    <button type="submit" id="search-button"><i class="fa fa-search"></i></button>
+          <button type="submit" id="search-button"><i class="fa fa-search"></i></button>
 
 
     </form>
@@ -17,7 +21,7 @@
 
   <div>
 
-    <select class="form-control browser-default dropdown" id="ratioChoice" onchange="changeSelect()">
+    <select class="form-control browser-default dropdown" id="ratio-choice" onchange="changeSelect()">
               {{!-- <option value="" selected="selected">Choose Ratio</option> --}}
               <option value="1">Current Ratio</option>
               <option value="2">Working Capital</option>
@@ -38,9 +42,59 @@
 
 </div>
 
+
+<!-- Enter Company Name -->
+<div class="row">
+  <div class="col-auto">
+    <form>
+      <div class="form-group">
+        <label for="ticker">Portfolio:</label>
+        <input class="form-control" type="text" id="user-input" name="ticker" required value="AAPL">
+      </div>
+      <button id="add-button" class="form-control btn btn-search">Add</button>
+      <hr class="my-4">
+      <!-- Show Portfolio List -->
+      {{#if user.portfolios.length}}
+      <div class="form-group">
+          {{#each user.portfolios as |portfolio| }}
+          <label for="portfolio-checkbox">
+            <input type="checkbox" class="single-check" data-id="{{portfolio.company_symbol}}" name="portfolio-checkbox" onclick="onlyOne(this)" /> {{portfolio.company_symbol}}
+          </label>
+          {{/each}}
+      </div>
+      <button id="delete-button" class="form-control btn btn-danger">Delete</button>
+      {{/if}}
+    </form>
+  </div>
+</div>
       
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-    <script src="/js/ratio.js"></script>
-    <script src="/js/ratiopage.js"></script>
-    <script src="jquery-3.6.0.min.js"></script>
+{{#if user.portfolios.length}}
+<div class="row">
+  <div class="col-auto">
+    <p class="text-center"> Company Information </p>
+  </div>
+</div>
+
+<button id="company-button" class="btn btn-primary">Information</button>
+<button id="result-button" class="btn btn-primary">Result Button</button>
+
+<div class="row">
+  <div class="col-auto">
+    <div class="card">
+      {{#each user.portfolios as |portfolio| }}
+      <div class="card-header">
+        <h4>Company: {{portfolio.company_symbol}}</h4>
+        <p></p>
+      </div>
+      <div class="card-body">
+        <p class="card-text">{{portfolio.description}}</p>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+{{/if}}
+
+
+
     
