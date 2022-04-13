@@ -1,147 +1,216 @@
-const ratioChoice = document.getElementById('ratioChoice');
-ratioChoice.addEventListener('click', chooseRatio);
+// Chart Object
+const canvas = document.getElementById('myChart');
+const ctx = canvas.getContext('2d');
 
-function chooseRatio(){
-console.log(ratioChoice.value);
-
-}
-
-
-var canvas = document.getElementById("myChart");
-var ctx = canvas.getContext('2d');
+// Document Object
+const dropDownMenu = document.querySelector('#ratio-choice');
+const resultButton = document.querySelector('#result-button');
+const userInfo = document.querySelector('#user-info');
 
 // Global Options:
 Chart.defaults.global.defaultFontColor = 'black';
 Chart.defaults.global.defaultFontSize = 16;
 
-var data = {
+// Chart Variables
+let datasetArray = [];
+let colorArray = ['red', 'blue', 'black', 'green', 'purple', 'orange', 'grey', 'yellow', 'pink', 'navy'];
+let myIndex = 0;
+let ratioChoice = 1;  // Default: Current Ratio
+let ratioText = ['Current Ratio', 'Quick Ratio', 'Working Capital'];
 
+let data = {
   labels: [2017, 2018, 2019, 2020, 2021],
-
-  datasets: [{
-
-      label: "Business 1",
-
-      fill: false,
-
-      lineTension: 0.1,
-
-      backgroundColor: "red",
-
-      borderColor: "red", // The main line color
-
-      borderCapStyle: 'butt',
-
-      borderDash: [5, 15], 
-
-      borderDashOffset: 0.0,
-
-      pointBorderColor: "black",
-
-      pointBackgroundColor: "white",
-
-      pointBorderWidth: 1,
-
-      pointHoverRadius: 8,
-
-      pointHoverBackgroundColor: "red",
-
-      pointHoverBorderColor: "black",
-
-      pointHoverBorderWidth: 2,
-
-      pointRadius: 4,
-
-      pointHitRadius: 10,
-
-      data: [65, 59, 80, 81, 56],
-
-      spanGaps: true,
-
-    }, {
-
-      label: "Business 2",
-
-      fill: false,
-
-      lineTension: 0.1,
-
-      backgroundColor: "blue",
-
-      borderColor: "blue",
-
-      borderCapStyle: 'butt',
-
-      borderDash: [],
-
-      borderDashOffset: 0.0,
-
-      pointBorderColor: "black",
-
-      pointBackgroundColor: "white",
-
-      pointBorderWidth: 1,
-
-      pointHoverRadius: 8,
-
-      pointHoverBackgroundColor: "blue",
-
-      pointHoverBorderColor: "black",
-
-      pointHoverBorderWidth: 2,
-
-      pointRadius: 4,
-
-      pointHitRadius: 10,
-
-      data: [10, 20, 60, 95, 64],
-
-      spanGaps: true,
-    }
-
-  ]
+  datasets: datasetArray
 };
 
 // Notice the scaleLabel at the same level as Ticks
-var options = {
+let options = {
   scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                },
-                scaleLabel: {
-                     display: true,
-                     labelString: 'Current Ratio',
-                     fontSize: 20 
-                  }
-            }]            
-        }  
+    yAxes: [{
+      ticks: {
+        beginAtZero: false
+      },
+      scaleLabel: {
+        display: true,
+        labelString: 'Current Ratio',
+        fontSize: 20
+      }
+    }]
+  }
 };
 
+// let options = {
+//   scales: {
+//       y: {
+//           beginAtZero: true
+//       }
+//   }
+// }
+
 // Chart declaration:
-var myBarChart = new Chart(ctx, {
+let myChart = new Chart(ctx, {
   type: 'line',
   data: data,
   options: options
 });
 
 
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
+function calculateRatio(symbol) {
+  const ticker = symbol;
+  // const keyAPI = `17460026230d940ebe74cf92231eb36e`; // nara
+  // const keyAPI = `0e0111a172272a2fcfd42016bb1d29cf`; // ethan
+  const keyAPI = `2c582395bb4c1edbb8f89db296b46aeb`; // brandon
+
+  let balanceSheetURL = `https://financialmodelingprep.com/api/v3/balance-sheet-statement/${ticker}?apikey=${keyAPI}&limit=120`;
+
+  fetch(balanceSheetURL)
+    .then(response => response.json())
+    .then(data => {
+      // console.log("Balance Sheets");
+      // console.log(data);
+      if (data.length > 0) {
+        let ratioResult = [];
+        for (let i = 4; i >= 0; i--) {
+          let symbol = data[i].symbol;
+          let calendarYear = data[i].calendarYear;
+          let workingCapital = data[i].totalCurrentAssets - data[i].totalCurrentLiabilities;
+          let currentRatio = data[i].totalCurrentAssets / data[i].totalCurrentLiabilities;
+          let quickRatio = (data[i].cashAndCashEquivalents + data[i].netReceivables) / data[i].totalCurrentLiabilities;
+          ratioResult.push({
+            symbol: symbol,
+            calendarYear: calendarYear,
+            workingCapital: workingCapital,
+            currentRatio: currentRatio,
+            quickRatio: quickRatio
+          })
+        }
+        console.log(ratioResult);
+        // ratioChoice = "Current Ratio";
+        let businessData = [];
+        switch (ratioChoice) {
+          case "1": { // Current Ratio
+            for (let i = 0; i < ratioResult.length; i++) {
+              const element = ratioResult[i].currentRatio;
+              businessData.push(element);
+            }
+            break;
+          }
+          case "2": { // Quick Ratio
+            for (let i = 0; i < ratioResult.length; i++) {
+              const element = ratioResult[i].quickRatio;
+              businessData.push(element);
+            }
+            break;
+          }
+          case "3": { // Working Capital
+            for (let i = 0; i < ratioResult.length; i++) {
+              const element = ratioResult[i].workingCapital;
+              businessData.push(element);
+            }
+            break;
+          }
+          default: {
+            for (let i = 0; i < ratioResult.length; i++) {
+              const element = ratioResult[i].currentRatio;
+              businessData.push(element);
+            }
+            break;
+          }
+          // console.log(businessData);     
+        }
+        // Collecting chart dataset
+        datasetArray.push({
+          label: ticker,
+          fill: false,
+          lineTension: 0.1,
+          backgroundColor: colorArray[myIndex],
+          borderColor: colorArray[myIndex],
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          pointBorderColor: "black",
+          pointBackgroundColor: "white",
+          pointBorderWidth: 1,
+          pointHoverRadius: 8,
+          pointHoverBackgroundColor: colorArray[myIndex],
+          pointHoverBorderColor: "black",
+          pointHoverBorderWidth: 2,
+          pointRadius: 4,
+          pointHitRadius: 10,
+          data: businessData,
+          spanGaps: true,
+        });
+        console.log(datasetArray);
+        myIndex++;
+      } else {
+        console.log(`The company: ${ticker} is not found!`);
+      }
+    });
+  return;
+};
+
+function createDataset() {
+  // datasetArray = [];
+  const id = userInfo.getAttribute('data-id');
+  let checkChoice = dropDownMenu.value;
+  if (checkChoice) {
+    ratioChoice = checkChoice;
+  }
+  console.log(ratioChoice);
+  fetch(`/api/portfolios/${id}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if (data.length > 0) {
+        myIndex = 0;
+        for (let index = 0; index < data.length; index++) {
+          let company = data[index].company_symbol;
+          calculateRatio(company);
+        }
+      } else {
+        console.log(`No data found!`);
+      };
+    });
+    myChart.update();
 }
 
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
+createDataset();
+
+if (resultButton) {
+  resultButton.addEventListener('click', createDataset);
+}
+
+function changeSelect() {
+  const checkChoice = dropDownMenu.value;
+  switch (checkChoice) {
+    case "1":
+      document.getElementById("ratio-text").innerHTML = "The current ratio is a liquidity ratio that measures a companys ability to pay short-term obligations or those due within one year. It tells investors and analysts how a company can maximize the current assets on its balance sheet to satisfy its current debt and other payables. A current ratio that is in line with the industry average or slightly higher is generally considered acceptable. A current ratio that is lower than the industry average may indicate a higher risk of distress or default. Similarly, if a company has a very high current ratio compared with its peer group, it indicates that management may not be using its assets efficiently.";
+      break;
+    case "2":
+      document.getElementById("ratio-text").innerHTML = "The quick ratio is an indicator of a company’s short-term liquidity position and measures a company’s ability to meet its short-term obligations with its most liquid assets. Since it indicates the company’s ability to instantly use its near-cash assets (assets that can be converted quickly to cash) to pay down its current liabilities, it is also called the acid test ratio. An acid test is a slang term for a quick test designed to produce instant results.";
+      break;
+    case "3":
+      document.getElementById("ratio-text").innerHTML = "";
+      break;
+    default:
+      document.getElementById("ratio-text").innerHTML = "The current ratio is a liquidity ratio that measures a companys ability to pay short-term obligations or those due within one year. It tells investors and analysts how a company can maximize the current assets on its balance sheet to satisfy its current debt and other payables. A current ratio that is in line with the industry average or slightly higher is generally considered acceptable. A current ratio that is lower than the industry average may indicate a higher risk of distress or default. Similarly, if a company has a very high current ratio compared with its peer group, it indicates that management may not be using its assets efficiently.";
+      break;
   }
 }
+
+  // let incomeStatementURL = `https://financialmodelingprep.com/api/v3/income-statement/${ticker}?limit=120&apikey=${keyAPI}`;
+  // fetch(incomeStatementURL)
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     console.log("Income Statement");
+  //     console.log(data);
+  //   });
+
+  // let cashFlowStatementURL = `https://financialmodelingprep.com/api/v3/cash-flow-statement/${ticker}?limit=120&apikey=${keyAPI}`;
+  // fetch(cashFlowStatementURL)
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     console.log("Cash Flow Statement");
+  //     console.log(data);
+  //   });
+
