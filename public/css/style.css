@@ -7,7 +7,7 @@ header, .project:not(:last-child) {
 }
 
 body{
-  background-color: antiquewhite;
+  background-color: white;
 }
 
 .no-button {
@@ -170,4 +170,9 @@ ol{
 h2{
   text-align: center;
   margin-top: 15px;
+}
+
+.logoimage{
+  width: 100px;
+  height: 100px;
 }

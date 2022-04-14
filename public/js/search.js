@@ -11,7 +11,7 @@ function getCompanyInfo(symbol, portfolioId) {
   const ticker = symbol;
   
   const id = portfolioId;
-  const keyAPI = `17460026230d940ebe74cf92231eb36e`;
+  const keyAPI = `d819321c933c451db684ef4a2b41d62d`;
   let companyURL = `https://financialmodelingprep.com/api/v3/profile/${ticker}?apikey=${keyAPI}`;
 
   fetch(companyURL)

@@ -58,10 +58,10 @@ let myChart = new Chart(ctx, {
 
 function calculateRatio(symbol) {
   const ticker = symbol;
-  const keyAPI = `17460026230d940ebe74cf92231eb36e`; // nara1
+  // const keyAPI = `17460026230d940ebe74cf92231eb36e`; // nara1
   // const keyAPI = `0e0111a172272a2fcfd42016bb1d29cf`; // ethan
   // const keyAPI = `2c582395bb4c1edbb8f89db296b46aeb`; // brandon
-  // const keyAPI = `d819321c933c451db684ef4a2b41d62d`; // nara2
+  const keyAPI = `d819321c933c451db684ef4a2b41d62d`; // nara2
 
 
   let balanceSheetURL = `https://financialmodelingprep.com/api/v3/balance-sheet-statement/${ticker}?apikey=${keyAPI}&limit=120`;
